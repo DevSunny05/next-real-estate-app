@@ -5,7 +5,7 @@ export async function POST(req) {
   try {
     const evt = await verifyWebhook(req);
 
-    const SIGNING_SECRET = process.env.SIGNING_SECRET;
+    const SIGNING_SECRET = process.env.SIGNING_SECRETS;
 
     if (!SIGNING_SECRET) {
       throw new Error("Error!! Please add SIGNING_SECRET from clerk");
