@@ -1,4 +1,4 @@
-import mongoose from "moongoose";
+import mongoose from "mongoose";
 
 let initialized = false;
 export const connect = async () => {
@@ -21,3 +21,22 @@ export const connect = async () => {
     console.log(error);
   }
 };
+
+// export async function connect() {
+//   try {
+//     // Avoid deprecation warnings for query filters in older codebases
+//     mongoose.set("strictQuery", false);
+
+//     const conn = await mongoose.connect(process.env.MONGO_URL);
+
+//     console.log(
+//       `MongoDB connected: ${conn.connection.host}:${conn.connection.port}/${conn.connection.name}`
+//     );
+//     return conn;
+//   } catch (error) {
+//     console.error("MongoDB connection error:", error);
+//     throw error;
+//   }
+// }
+
+// export default connect;
