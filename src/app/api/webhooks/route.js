@@ -1,3 +1,5 @@
+import { createorUpdateUser, deleteUser } from "@/lib/actions/userActions";
+import { clerkClient } from "@clerk/nextjs/server";
 import { verifyWebhook } from "@clerk/nextjs/webhooks";
 import { NextRequest } from "next/server";
 
@@ -7,19 +9,44 @@ export async function POST(req) {
 
     // Do something with payload
     // For this guide, log payload to console
-    const { id } = evt.data;
-    const eventType = evt.type;
+    const { id } = evt?.data;
+    const eventType = evt?.type;
 
-    if (evt.type === "user.created") {
-      console.log("userId:", evt.data.id);
-    }
+    if (evt.type === "user.created" || evt.type === "user.updated") {
+      const { first_name, last_name, image_url, email_address } = evt?.data;
 
-    if (evt.type === "user.updated") {
+      try {
+        const user = await createorUpdateUser(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          email_address
+        );
+        if (user && eventType === "user.created") {
+          try {
+            await clerkClient.user.updateUserMetadata(id, {
+              publicMetadata: {
+                userMongoId: user._id,
+              },
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
       console.log("userId:", evt.data.id);
     }
 
     if (evt.type === "user.deleted") {
-      console.log("userId:", evt.data.id);
+      try {
+        await deleteUser(id);
+      } catch (error) {
+        console.log(error);
+        return new Response("Error:Could not delete user", { status: 400 });
+      }
     }
 
     return new Response("Webhook received", { status: 200 });
