@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema(
   {
     clerkId: {
-      typeKey: String,
+      type: String,
       required: true,
       unique: true,
     },
