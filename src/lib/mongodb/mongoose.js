@@ -1,26 +1,43 @@
 import mongoose from "mongoose";
 
-let initialized = false;
-export const connect = async () => {
-  mongoose.set("strictQuery", true);
+let isConnected = false;
 
-  if (initialized) {
-    console.log("Mongodb already connected");
-    return;
-  }
+export const connect = async () => {
+  if (isConnected) return;
 
   try {
-    await mongoose.connect(process.env.MONGO_URL, {
-      dbname: "next-estate",
-      useNewUrlParser: true,
-      useUnifiedTopilogy: true,
-    });
-
-    initialized = trueconsole.log("Mongodb connected");
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    isConnected = true;
+    console.log("✅ MongoDB connected");
   } catch (error) {
-    console.log(error);
+    console.error("❌ MongoDB connection error:", error);
+    throw new Error("MongoDB connection failed");
   }
 };
+
+// import mongoose from "mongoose";
+
+// let initialized = false;
+// export const connect = async () => {
+//   mongoose.set("strictQuery", true);
+
+//   if (initialized) {
+//     console.log("Mongodb already connected");
+//     return;
+//   }
+
+//   try {
+//     await mongoose.connect(process.env.MONGO_URL, {
+//       dbname: "next-estate",
+//       useNewUrlParser: true,
+//       useUnifiedTopilogy: true,
+//     });
+
+//     initialized = trueconsole.log("Mongodb connected");
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 // export async function connect() {
 //   try {
