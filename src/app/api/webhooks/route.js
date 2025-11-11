@@ -13,7 +13,7 @@ export async function POST(req) {
     const { id } = evt?.data;
     const eventType = evt?.type;
 
-    if (evt.type === "user.created" || evt.type === "user.updated") {
+    if (eventType === "user.created" || eventType === "user.updated") {
       const { first_name, last_name, image_url, email_addresses } = evt?.data;
 
       try {
