@@ -28,11 +28,12 @@ export async function POST(req) {
           try {
             await clerkClient.users.updateUserMetadata(id, {
               publicMetadata: {
-                userMongoId: user._id,
+                userMongoId: user._id.toString(),
               },
             });
+            console.log("Successfully saved MongoDB ID to Clerk:", user._id.toString());
           } catch (error) {
-            console.log(error);
+            console.error("Error updating Clerk metadata:", error);
           }
         }
       } catch (error) {
