@@ -11,6 +11,8 @@
   "dependencies": {
     "@clerk/backend": "^2.22.0",
     "@clerk/nextjs": "^6.34.5",
+    "cloudinary": "^2.8.0",
+    "firebase": "^12.6.0",
     "mongodb": "^7.0.0",
     "mongoose": "^8.19.3",
     "next": "15.5.6",
