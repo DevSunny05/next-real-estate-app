@@ -1,6 +1,6 @@
 import { createorUpdateUser, deleteUser } from "@/lib/actions/userActions";
 // import { clerkClient } from "@clerk/nextjs/dist/types/server";
-import { clerkClient } from "@clerk/backend";
+import { clerkClient } from "@clerk/nextjs/server";
 import { verifyWebhook } from "@clerk/nextjs/webhooks";
 import { NextRequest } from "next/server";
 
@@ -26,9 +26,9 @@ export async function POST(req) {
         );
         if (user && eventType === "user.created") {
           try {
-            await clerkClient.users.updateUser(id, {
+            await clerkClient.users.updateUserMetadata(id, {
               publicMetadata: {
-                userMongoId: user._id.toString(),
+                userMongoId: user._id,
               },
             });
             console.log("Successfully saved MongoDB ID to Clerk:", user._id.toString());
