@@ -15,9 +15,29 @@ export async function POST(req) {
     // Extract listingData and userMongoId from request
     const { listingData, userMongoId } = data;
 
-    if(!user || user.publicMetadata?.userMongoId !== userMongoId){
+    // Check if user is authenticated
+    if (!user) {
         return NextResponse.json(
-            { error: "Unauthorized" },
+            { error: "Unauthorized: User not authenticated" },
+            { status: 401 }
+        );
+    }
+
+    // Get userMongoId from Clerk metadata and convert to string for comparison
+    const clerkUserMongoId = user.publicMetadata?.userMongoId;
+    const clerkUserMongoIdStr = clerkUserMongoId ? String(clerkUserMongoId) : null;
+    const requestUserMongoIdStr = userMongoId ? String(userMongoId) : null;
+
+    // Verify the userMongoId matches
+    if (!clerkUserMongoIdStr || clerkUserMongoIdStr !== requestUserMongoIdStr) {
+        console.error("Authorization failed:", {
+            hasUser: !!user,
+            clerkUserMongoId: clerkUserMongoIdStr,
+            requestUserMongoId: requestUserMongoIdStr,
+            publicMetadata: user.publicMetadata
+        });
+        return NextResponse.json(
+            { error: "Unauthorized: User ID mismatch" },
             { status: 401 }
         );
     }

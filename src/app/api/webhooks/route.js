@@ -31,7 +31,7 @@ export async function POST(req) {
           try {
             await clerkClient.users.updateUserMetadata(id, {
               publicMetadata: {
-                userMongoId: user._id,
+                userMongoId: user._id.toString(), // Convert ObjectId to string
               },
             });
             console.log("Successfully saved MongoDB ID to Clerk:", user._id.toString());
