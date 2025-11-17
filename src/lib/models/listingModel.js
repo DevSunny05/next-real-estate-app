@@ -67,7 +67,8 @@ const listingSchema = new mongoose.Schema(
   }
 );
 
-const listingModel = mongoose.model("listing", listingSchema);
+const listingModel =
+  mongoose.models.listing || mongoose.model("listing", listingSchema);
 
 export default listingModel;
 

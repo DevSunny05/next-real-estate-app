@@ -1,5 +1,30 @@
+import { headers } from "next/headers";
 import { FaBath, FaBed, FaMapMarkedAlt, FaParking, FaHome } from "react-icons/fa";
 
+const LOCAL_HOST_PATTERNS = ["localhost", "127.0.0.1"];
+
+async function resolveBaseUrl() {
+  const envBase =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.URL ||
+    process.env.VERCER_URL ||
+    process.env.VERCEL_URL ||
+    "";
+
+  if (
+    envBase &&
+    !LOCAL_HOST_PATTERNS.some((pattern) => envBase.includes(pattern))
+  ) {
+    return envBase.replace(/\/$/, "");
+  }
+
+  const headerStore = await headers();
+  const host = headerStore.get("host") || "localhost:3000";
+  const protocol = LOCAL_HOST_PATTERNS.some((pattern) => host.includes(pattern))
+    ? "http"
+    : "https";
+  return `${protocol}://${host}`;
+}
 
 function formatPrice(value = 0) {
   return Number(value).toLocaleString("en-US", {
@@ -9,14 +34,19 @@ function formatPrice(value = 0) {
   });
 }
 
-const baseUrl = process.env.URL || process.env.VERCEL_URL
-
 export default async function Listing({ params }) {
   let data;
 
   try {
-   
-    const res = await fetch(`${baseUrl}/api/listings/get?id=${params.id}`, {
+    const resolvedParams = await params;
+    const listingId = resolvedParams?.id;
+
+    if (!listingId) {
+      throw new Error("Listing ID missing in route params");
+    }
+
+    const baseUrl = await resolveBaseUrl();
+    const res = await fetch(`${baseUrl}/api/listings/get?id=${listingId}`, {
       cache: "no-store",
     });
 
