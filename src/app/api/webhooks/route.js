@@ -1,8 +1,11 @@
 import { createorUpdateUser, deleteUser } from "@/lib/actions/userActions";
-// import { clerkClient } from "@clerk/nextjs/dist/types/server";
-import { clerkClient } from "@clerk/nextjs/server";
+import { createClerkClient } from "@clerk/backend";
 import { verifyWebhook } from "@clerk/nextjs/webhooks";
 import { NextRequest } from "next/server";
+
+const clerkClient = createClerkClient({
+  secretKey: process.env.CLERK_SECRET_KEY,
+});
 
 export async function POST(req) {
   try {
