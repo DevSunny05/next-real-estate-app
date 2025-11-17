@@ -1,24 +1,5 @@
 import { FaBath, FaBed, FaMapMarkedAlt, FaParking, FaHome } from "react-icons/fa";
 
-import { headers } from "next/headers";
-
-function resolveBaseUrl() {
-  const envBase =
-    process.env.NEXT_PUBLIC_APP_URL ||
-    process.env.URL ||
-    process.env.VERCER_URL ||
-    process.env.VERCEL_URL ||
-    "";
-
-  if (envBase) {
-    return envBase.replace(/\/$/, "");
-  }
-
-  const headerStore = headers();
-  const host = headerStore.get("host") || "localhost:3000";
-  const protocol = host.includes("localhost") ? "http" : "https";
-  return `${protocol}://${host}`;
-}
 
 function formatPrice(value = 0) {
   return Number(value).toLocaleString("en-US", {
@@ -28,11 +9,13 @@ function formatPrice(value = 0) {
   });
 }
 
+const baseUrl = process.env.URL || process.env.VERCEL_URL
+
 export default async function Listing({ params }) {
   let data;
 
   try {
-    const baseUrl = resolveBaseUrl();
+   
     const res = await fetch(`${baseUrl}/api/listings/get?id=${params.id}`, {
       cache: "no-store",
     });
