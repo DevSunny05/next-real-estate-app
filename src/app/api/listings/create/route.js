@@ -1,27 +1,41 @@
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import listingModel from "@/lib/models/listingModel";
 import { connect } from "@/lib/mongodb/mongoose";
 
 export async function POST(req) {
-    const { user } = await currentUser();
   try {
-
-    // Connect to database
-    await connect();
-
-      const data = await req.json();
-
-    // Extract listingData and userMongoId from request
-    const { listingData, userMongoId } = data;
-
-    // Check if user is authenticated
-    if (!user) {
+    // Check authentication first
+    const authResult = await auth();
+    const { userId } = authResult || {};
+    
+    console.log("Auth check:", { userId, hasAuth: !!authResult });
+    
+    if (!userId) {
+        console.error("No userId found in auth result");
         return NextResponse.json(
             { error: "Unauthorized: User not authenticated" },
             { status: 401 }
         );
     }
+
+    // Get full user object
+    const user = await currentUser();
+    
+    if (!user) {
+        return NextResponse.json(
+            { error: "Unauthorized: Could not retrieve user data" },
+            { status: 401 }
+        );
+    }
+
+    // Connect to database
+    await connect();
+
+    const data = await req.json();
+
+    // Extract listingData and userMongoId from request
+    const { listingData, userMongoId } = data;
 
     // Get userMongoId from Clerk metadata and convert to string for comparison
     const clerkUserMongoId = user.publicMetadata?.userMongoId;

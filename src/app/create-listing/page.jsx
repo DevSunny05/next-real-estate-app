@@ -157,6 +157,14 @@ const page = () => {
         setErrorMessage("");
 
         try {
+            // Wait for Clerk to load
+            if (!isLoaded) {
+                setError(true);
+                setErrorMessage("Please wait, loading user data...");
+                setLoading(false);
+                return;
+            }
+
             // Check if user is signed in
             if (!isSignedIn || !user) {
                 setError(true);
@@ -226,6 +234,7 @@ const page = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include", // Ensure cookies are sent
                 body: JSON.stringify({
                     listingData,
                     userMongoId
