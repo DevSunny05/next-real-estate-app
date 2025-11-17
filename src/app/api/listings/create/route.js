@@ -12,10 +12,14 @@ export async function POST(req) {
 
       const data = await req.json();
 
-    if(!user || user.publicMetadata.userMongoId != data.userMongoId){
-        return new Response("Unauthorize",{
-            status:401
-        })
+    // Extract listingData and userMongoId from request
+    const { listingData, userMongoId } = data;
+
+    if(!user || user.publicMetadata?.userMongoId !== userMongoId){
+        return NextResponse.json(
+            { error: "Unauthorized" },
+            { status: 401 }
+        );
     }
 
     const {
@@ -32,7 +36,7 @@ export async function POST(req) {
       offer,
       imageUrls,
       userRef,
-    } = data;
+    } = listingData || {};
 
     // Validation
     if (!name || !description || !address) {
