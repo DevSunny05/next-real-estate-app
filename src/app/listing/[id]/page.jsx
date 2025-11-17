@@ -1,9 +1,10 @@
 import { FaBath, FaBed, FaMapMarkedAlt, FaParking, FaHome } from "react-icons/fa";
 
-const APP_URL =
-  process.env.NEXT_PUBLIC_APP_URL ||
+const APP_URL = (
   process.env.URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+  process.env.VERCER_URL ||
+  "http://localhost:3000"
+).replace(/\/$/, "");
 
 function formatPrice(value = 0) {
   return Number(value).toLocaleString("en-US", {
