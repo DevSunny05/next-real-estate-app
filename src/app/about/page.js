@@ -82,7 +82,7 @@ export default function About() {
           <div className="relative">
             <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop"
+                src="/images/rent.webp"
                 alt="Modern real estate office"
                 className="w-full h-full object-cover rounded-lg"
               />

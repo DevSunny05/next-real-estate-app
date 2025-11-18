@@ -192,7 +192,7 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <div className="rounded-lg overflow-hidden shadow-2xl">
           <img
-            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&h=600&fit=crop"
+            src="/images/rent3.webp"
             alt="Beautiful home"
             className="w-full h-[400px] sm:h-[500px] lg:h-[600px] object-cover"
           />
