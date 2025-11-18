@@ -1,0 +1,18 @@
+# Images Folder
+
+This folder is for storing static images that can be referenced in your application.
+
+## Usage
+
+You can reference images in this folder using:
+- `/images/your-image.jpg` in your code
+- Example: `<img src="/images/hero.jpg" alt="Hero" />`
+
+## Supported Formats
+
+- JPG/JPEG
+- PNG
+- GIF
+- WebP
+- SVG
+
