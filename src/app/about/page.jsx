@@ -1,5 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
-import { FaHome, FaUsers, FaAward, FaHandshake, FaChartLine, FaShieldAlt } from "react-icons/fa";
+import {
+  FaHome,
+  FaUsers,
+  FaAward,
+  FaHandshake,
+  FaChartLine,
+  FaShieldAlt,
+} from "react-icons/fa";
 
 export default function About() {
   const stats = [
@@ -80,11 +88,14 @@ export default function About() {
             </p>
           </div>
           <div className="relative">
-            <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-2xl">
-              <img
+            <div className="rounded-lg overflow-hidden shadow-2xl">
+              <Image
                 src="/images/rent.webp"
                 alt="Modern real estate office"
+                width={1280}
+                height={720}
                 className="w-full h-full object-cover rounded-lg"
+                priority
               />
             </div>
           </div>

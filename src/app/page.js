@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { FaMapMarkedAlt, FaBed, FaBath } from "react-icons/fa";
@@ -46,10 +47,12 @@ function ListingCard({ listing }) {
       className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
     >
       <div className="relative h-48 overflow-hidden">
-        <img
+        <Image
           src={listing.imageUrls?.[0] || "/placeholder.jpg"}
           alt={listing.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover group-hover:scale-110 transition-transform duration-300"
         />
         {listing.offer && (
           <span className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-xs font-semibold">
@@ -184,17 +187,20 @@ export default async function Home() {
           href="/search"
           className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
         >
-          Let's Get Started
+          Let&apos;s Get Started
         </Link>
       </section>
 
       {/* Hero Image */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <div className="rounded-lg overflow-hidden shadow-2xl">
-          <img
+          <Image
             src="/images/rent3.webp"
             alt="Beautiful home"
+            width={1920}
+            height={1080}
             className="w-full h-[400px] sm:h-[500px] lg:h-[600px] object-cover"
+            priority
           />
         </div>
       </section>
