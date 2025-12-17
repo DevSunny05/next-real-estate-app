@@ -4,7 +4,7 @@ let isConnected = false;
 
 export const connect = async () => {
   if (isConnected) return;
-  console.log(process.env.MONGO_UR);
+
   try {
     const conn = await mongoose.connect(process.env.MONGO_URL);
     isConnected = true;

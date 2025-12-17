@@ -38,7 +38,8 @@ export const deleteUser = async (id) => {
   try {
     await connect();
     await userModel.findOneAndDelete({ clerkId: id });
+    console.log("User deleted successfully");
   } catch (error) {
     console.log(error);
   }
-}
+};
